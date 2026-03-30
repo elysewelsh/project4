@@ -13,13 +13,20 @@ const getUserProjects = async (req, res) => {
 
 const getProjectById = async (req, res) => {
   try {
-    const projects = await Project.find(
-        {user: { $eq: req.user._id},
-        _id: {$eq: req.params.id}}
-    );
-    res.json(projects);
+    const project = await Project.findById(req.params.id);
+    if (req.user._id != project.user) {
+        return res.status(403).json({ message: 'User forbidden from viewing this project!' });
+    }
+    if (!project) {
+      return res.status(404).json({ message: 'No project found with this id!' });
+    }
+    res.json(project);
   } catch (err) {
-    res.status(500).json(err);
+    let errorName = err.name;
+    if (errorName = "CastError") {
+        return res.status(500).json({ message: 'Project ID in improper format!' })
+    }
+    res.status(500).json(err.name);
   }
 }
 
@@ -29,7 +36,7 @@ const createProject = async (req, res) => {
       ...req.body,
       user: req.user._id
     });
-    console.log("inside the project:" + project)
+    console.log("New Project:" + project)
     await project.save();
     res.status(201).json(project);
   } catch (err) {
@@ -39,7 +46,7 @@ const createProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
   try {
-    const project = await Project.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    const project = await Project.findByIdAndUpdate(req.params.id, req.body, {returnDocument: 'after'});
     if (req.user._id != project.user) {
         return res.status(403).json({ message: 'User forbidden from updating this project' });
     }
