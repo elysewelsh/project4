@@ -67,7 +67,7 @@ const handleSubmit = async (e) => {
                 <button>Submit</button>
             </form>
             <h1>Dashboard</h1>
-            {projects.map(project => <Project project={project} key={project._id}/>)}
+            {projects.map(project => <Project key={project._id} project={project} setProjects={setProjects}/>)}
         </div>
     )
 }
