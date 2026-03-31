@@ -85,8 +85,8 @@ const handleSubmit = async (e) => {
                 <>{params.projectId !== "undefined"
                 ?
                     <>
-                        <Project project={project} />
-                        {tasks.map(task => <Task task={task} key={task._id}/>)}
+                        <Project project={project} canEdit={false}/>
+                        {tasks.map(task => <Task key={task._id} task={task} tasks={tasks} setTasks={setTasks}/>)}
                     </>
                 :
                     <></>

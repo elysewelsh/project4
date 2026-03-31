@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { projectClient } from '../clients/api.js'
 import { useState } from 'react'
 
-function Project({ project, projects={}, setProjects=[] }) {
+function Project({ project, projects={}, setProjects=[], canEdit=true}) {
 
     let date = new Date(project.createdAt)
 
@@ -28,6 +28,8 @@ function Project({ project, projects={}, setProjects=[] }) {
     }
 
     const handleEdit = async () => {
+        setName(project.name)
+        setDescription(project.description)
         setEditing(true)       
     }
 
@@ -35,7 +37,7 @@ function Project({ project, projects={}, setProjects=[] }) {
             e.preventDefault()
             try {
 // make a put request to update the post based off the state (title, body)
-            const { data } = await projectClient.put(`/${project._id}`, { name, description })
+            const { data } = await projectClient.put(`/${project._id}`, { name, description})
 // map over projects state to update new fields in form for project that matches project in view
             const updatedProjects = projects.map(p => p._id === project._id ? data : p)
             setProjects(updatedProjects)
@@ -56,8 +58,12 @@ function Project({ project, projects={}, setProjects=[] }) {
             <div>{date.toLocaleDateString()} {date.toLocaleTimeString()}</div>
             <p>{project.description}</p>
             <p>{project.user}</p>
-            <button onClick={handleDelete}>X</button>
-            <button onClick={handleEdit}>Edit</button>
+            {canEdit &&
+                <>
+                <button onClick={handleDelete}>X</button>
+                <button onClick={handleEdit}>Edit</button>
+                </>
+            }
             <>
             {editing ?
             <form onSubmit={handleSubmit}>
@@ -68,7 +74,7 @@ function Project({ project, projects={}, setProjects=[] }) {
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    required={false}>
+                    required={true}>
                 </input>
                 <label htmlFor="description">Project Description:</label>
                 <textarea
@@ -76,7 +82,7 @@ function Project({ project, projects={}, setProjects=[] }) {
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    required={false}>
+                    required={true}>
                 </textarea>
                 <button>Submit</button>
             </form>
