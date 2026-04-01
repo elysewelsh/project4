@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { projectClient } from '../clients/api.js'
 import { useState } from 'react'
 
-function Project({ project, projects={}, setProjects=[], canEdit=true}) {
+function Project({ project, projects={}, setProjects=[], canEdit=true, isLink=true}) {
 
     let date = new Date(project.createdAt)
 
@@ -13,6 +13,10 @@ function Project({ project, projects={}, setProjects=[], canEdit=true}) {
     const [description, setDescription] = useState('')
 
     console.log("This is the project ID:", project._id)
+
+    // const projectUser = project.user[0].username
+
+    // console.log(project.user.username)
 
     const handleDelete = async () => {
         try {
@@ -27,7 +31,7 @@ function Project({ project, projects={}, setProjects=[], canEdit=true}) {
         }
     }
 
-    const handleEdit = async () => {
+    function handleEdit () {
         setName(project.name)
         setDescription(project.description)
         setEditing(true)       
@@ -51,13 +55,22 @@ function Project({ project, projects={}, setProjects=[], canEdit=true}) {
             }
         }
 
+                    // <Link key={project._id} to={"/ProjectDetails/"+ project._id} params={project={project} projects={projects} setProjects={setProjects} canEdit={true}}>
+                    //     <li>{project.name}</li>
+                    // </Link>
+
+
+
     return (
         <div>
-            <Link to={'/ProjectDetails/'+ project._id}>{project.name}</Link>
-            <h3>{project.name}</h3>
-            <div>{date.toLocaleDateString()} {date.toLocaleTimeString()}</div>
-            <p>{project.description}</p>
-            <p>{project.user}</p>
+            {isLink ?
+                <Link to={'/ProjectDetails/'+ project._id}>{project.name}</Link>
+                :
+                <h3>{project.name}</h3>
+            }
+            <div>Created Date: <span>{date.toLocaleDateString()} {date.toLocaleTimeString()}</span></div>
+            <p>Project Description: <span>{project.description}</span></p>
+            {/* <p>Project Owned By: <span>{project.user.username}</span></p> */}
             {canEdit &&
                 <>
                 <button onClick={handleDelete}>X</button>

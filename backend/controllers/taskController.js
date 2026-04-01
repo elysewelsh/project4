@@ -21,7 +21,7 @@ const createTask = async (req, res) => {
 const getTasksByProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.projectId);
-       if (project.user != req.user._id) {
+       if (project.user._id != req.user._id) {
         return res.status(403).json({ message: 'User forbidden from accessing this project' });
     }
     const tasks = await Task.find(
@@ -37,7 +37,7 @@ const updateTask = async (req, res) => {
     const task = await Task.findById(req.params.taskId);
     const projectField = task.project;
     const project = await Project.findById(projectField);
-    if (req.user._id != project.user) {
+    if (req.user._id != project.user._id) {
         return res.status(403).json({ message: 'User forbidden from updating this task' });
     }
     if (!task) {
@@ -58,7 +58,7 @@ const deleteTask = async (req, res) => {
     if (!project) {
         return res.status(404).json({ message: 'No project affiliated with this task!' });
     }
-    if (req.user._id != project.user) {
+    if (req.user._id != project.user._id) {
         return res.status(403).json({ message: 'User forbidden from deleting this task' });
     }
     if (!task) {

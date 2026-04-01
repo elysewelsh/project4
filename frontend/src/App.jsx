@@ -6,10 +6,13 @@ import Dashboard from './pages/Dashboard.jsx'
 import ProjectDetails from './pages/ProjectDetails.jsx'
 import Navbar from './components/Navbar.jsx'
 import { useUser } from './context/UserContext.jsx'
+// import useWindowSize from '../src/hooks'
 
 function App() {
 
     const { user } = useUser()
+
+
 
     return (
         <>

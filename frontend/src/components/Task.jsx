@@ -10,6 +10,8 @@ function Task({ task, tasks, setTasks }) {
         const [title, setTitle] = useState('')
         
         const [description, setDescription] = useState('')
+
+        // const [status, setStatus] = useState('Pending')
     
         const handleDelete = async () => {
             try {
@@ -27,7 +29,13 @@ function Task({ task, tasks, setTasks }) {
         const handleEdit = async () => {
             setTitle(task.title)
             setDescription(task.description)
+            // setStatus(task.status)
             setEditing(true)       
+        }
+
+        function handleStatusChange (taskId, newStatus) {
+        const updatedTasks = tasks.map(task => task._id === taskId ? {...task, status: newStatus } : task )
+        setTasks(updatedTasks)
         }
     
         const handleSubmit = async (e) => {
@@ -41,6 +49,7 @@ function Task({ task, tasks, setTasks }) {
     // reset the form
                     setTitle('')
                     setDescription('')
+                    // setStatus('Pending')
                     setEditing(false)
                 }
                 catch (err) {
@@ -51,9 +60,24 @@ function Task({ task, tasks, setTasks }) {
     return (
         <div>
             <h3>{task.title}</h3>
-            <div>{date.toLocaleDateString()} {date.toLocaleTimeString()}</div>
-            <p>{task.description}</p>
-            <p>{task.project}</p>
+            <div>Date Created: <span>{date.toLocaleDateString()} {date.toLocaleTimeString()}</span></div>
+            <p>Task Description: <span>{task.description}</span></p>
+            <div>
+                <p>Current Status: <span>{task.status}</span></p>
+                <div>
+                    <p>Update Status: </p>
+                        <select
+                        id="status"
+                        value={status}
+                        onChange={(e) => handleStatusChange(task._id, (e.target.value))}>
+                            <option value=''></option>
+                            <option value="Completed">Completed</option>
+                            <option value="Pending">Pending</option>
+                            <option value="In-Progress">In-Progress</option>
+                        </select>
+                </div>
+            </div>
+            {/* <p>{task.project}</p> */}
             <button onClick={handleDelete}>X</button>
             <button onClick={handleEdit}>Edit</button>
             <>

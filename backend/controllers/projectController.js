@@ -4,7 +4,8 @@ import Task from '../models/Task.js'
 const getUserProjects = async (req, res) => {
   try {
     const projects = await Project.find(
-        {user: { $eq: req.user._id}});
+        {user: { $eq: req.user._id}})
+        .populate('user')
     res.json(projects);
   } catch (err) {
     res.status(500).json(err);
@@ -13,8 +14,8 @@ const getUserProjects = async (req, res) => {
 
 const getProjectById = async (req, res) => {
   try {
-    const project = await Project.findById(req.params.id);
-    if (req.user._id != project.user) {
+    const project = await Project.findById(req.params.id).populate('user');
+    if (req.user._id != project.user._id) {
         return res.status(403).json({ message: 'User forbidden from viewing this project!' });
     }
     if (!project) {
@@ -36,7 +37,7 @@ const createProject = async (req, res) => {
       ...req.body,
       user: req.user._id
     });
-    console.log("New Project:" + project)
+    // console.log("New Project:" + project)
     await project.save();
     res.status(201).json(project);
   } catch (err) {
@@ -47,7 +48,7 @@ const createProject = async (req, res) => {
 const updateProject = async (req, res) => {
   try {
     const project = await Project.findByIdAndUpdate(req.params.id, req.body, {returnDocument: 'after'});
-    if (req.user._id != project.user) {
+    if (req.user._id != project.user._id) {
         return res.status(403).json({ message: 'User forbidden from updating this project' });
     }
     if (!project) {
@@ -65,7 +66,7 @@ const deleteProject = async (req, res) => {
     if (!parentProject) {
       return res.status(404).json({ message: 'No project found with this id!' });
     }
-    if (req.user._id != parentProject.user) {
+    if (req.user._id != parentProject.user._id) {
         return res.status(403).json({ message: 'User forbidden from deleting this project' });
     }
     // const tasks = await Task.find({
