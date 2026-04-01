@@ -1,5 +1,5 @@
 import express from 'express'
-import authMiddleware from '../utils/auth.js'
+import { authMiddleware } from '../utils/auth.js'
 import projectController from '../controllers/projectController.js'
 
 const router = express.Router()

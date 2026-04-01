@@ -12,8 +12,6 @@ function Project({ project, projects={}, setProjects=[], canEdit=true}) {
     
     const [description, setDescription] = useState('')
 
-    console.log("This is the project ID:", project._id)
-
     const handleDelete = async () => {
         try {
 // removing project from database

@@ -2,7 +2,10 @@ import axios from 'axios'
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
-export const token = () => localStorage.getItem('token')
+export function token () {
+    const passkey = localStorage.getItem('token')
+    return passkey
+}
 
 export const userClient = axios.create({
     baseURL: `${BASE_URL}/api/users`,
@@ -32,18 +35,3 @@ taskClient.interceptors.request.use((req) => {
     }
     return req
 })
-
-        // const { language } = req.query
-
-        // let response
-
-        // if (language) {
-        //     response = await apiClient.get(`/random?language=${language}`);
-        // } else {
-        //     response = await apiClient.get('/random');
-        // }
-
-        // const transformedData = `{ "fact" : "${response.data.text}" }`
-
-    
-        // res.send(transformedData);

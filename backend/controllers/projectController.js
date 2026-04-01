@@ -14,18 +14,19 @@ const getUserProjects = async (req, res) => {
 const getProjectById = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
-    if (req.user._id != project.user) {
-        return res.status(403).json({ message: 'User forbidden from viewing this project!' });
-    }
     if (!project) {
       return res.status(404).json({ message: 'No project found with this id!' });
     }
+    if (req.user._id != project.user) {
+        return res.status(403).json({ message: 'User forbidden from viewing this project!' });
+    }
+
     res.json(project);
   } catch (err) {
-    let errorName = err.name;
-    if (errorName = "CastError") {
-        return res.status(500).json({ message: 'Project ID in improper format!' })
-    }
+    // let errorName = err.name;
+    // if (errorName = "CastError") {
+    //     return res.status(500).json({ message: 'Project ID in improper format!' })
+    // }
     res.status(500).json(err.name);
   }
 }

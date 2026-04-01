@@ -7,7 +7,7 @@ import Task from '../components/Task.jsx'
 
 function ProjectDetails() {
 
-let params = useParams()
+let params  = useParams()
 
 const [project, setProject] = useState('')
 
@@ -17,27 +17,29 @@ const [title, setTitle] = useState('')
 
 const [description, setDescription] = useState('')
 
+const [err, setErr] = useState('')
+
 // const navigate = useNavigate()
+const [paramProject, setParamProject] = useState('')
 
 useEffect(() => {
     async function getData() {
-        try {
-            if (params.projectId === "undefined") {
-                return
-            }
-        const project = await projectClient.get('/' + params.projectId)
+        const mongoIdRegExp = /^[a-fA-F\d]{24}$/
+        if ((params.projectId !== "undefined") && ((params.projectId).match(mongoIdRegExp))) {
+        setParamProject(params.projectId)
+        try {    
+        const project = await projectClient.get('/' + paramProject)
         setProject(project.data)
 // get our tasks from database
-        const { data } = await projectClient.get('/'+ params.projectId + '/tasks')
-        // const posts = response.data
-// save that in component's/local state variable
+        const { data } = await taskClient.get('projects/'+ paramProject + '/tasks')
         setTasks(data)
         }
         catch (err) {
-            console.error(err.response.data.message)
-            // alert(err.response.data.message)
-            // navigate('/dashboard')
+            setErr(err.response.data.message)
         }
+    } else {
+        console.log("problem or something?")
+    }
     }
     getData()
 }, [])
@@ -46,7 +48,7 @@ const handleSubmit = async (e) => {
     e.preventDefault()
     try {
 // make a post request to create the task based off the state (title, body)
-        const { data } = await taskClient.post('/' + params.projectId + '/tasks', { title, description })
+        const { data } = await taskClient.post('/' + paramProject + '/tasks', { title, description })
 
 // add the new task to the state
         setTasks([...tasks, data])
@@ -55,12 +57,21 @@ const handleSubmit = async (e) => {
         setDescription('')
     }
     catch (err) {
-        console.error(err)
+        console.log(err)
     }
 }
 
     return (
         <div>
+            <>
+            {
+                (err !== undefined || '') ?
+                <>
+                {`${err}`}
+                </>
+                :
+<>
+
                 <form onSubmit={handleSubmit}>
                     <h2>Add a Task Here</h2>
                     <label htmlFor="title">Task:</label>
@@ -92,6 +103,15 @@ const handleSubmit = async (e) => {
                     <></>
                 }
                 </>
+
+</>
+
+            }
+            </>
+
+
+
+
         </div>
     )
 }
