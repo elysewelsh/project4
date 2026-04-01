@@ -73,6 +73,15 @@ useEffect(() => {
     setCompleted(tasks.filter((task) => task.status === "Completed"))
 },[tasks])
 
+const totalTasks = tasks.length;
+const pendingTasks = pending.length;
+const inProgressTasks = inProgress.length;
+const completedTasks = completed.length;
+
+const pendingBar = (pendingTasks/totalTasks)*100
+const inProgressBar = (inProgressTasks/totalTasks)*100
+const completedBar = (completedTasks/totalTasks)*100
+
 
     return (
         <div>
@@ -102,6 +111,32 @@ useEffect(() => {
                     ?
                         <>
                             <Project project={project} canEdit={false} isLink={false}/>
+                            <div className="m-4 p-4 gap-3 border-1 rounded-xl">
+                                Project Progress
+                                <div className="flex flex-row w-full border-1">
+                                    {pendingBar > 0 ?
+                                    <div style={{ width: `${pendingBar}%` }} className="bg-gray-400 p-2">
+                                        Pending
+                                    </div>
+                                    :
+                                    <></>
+                                    }
+                                    {inProgressBar > 0 ?
+                                    <div style={{ width: `${inProgressBar}%` }} className="bg-gray-500 p-2">
+                                        In-Progress
+                                    </div>
+                                    :
+                                    <></>
+                                    }
+                                    {completedBar > 0 ?
+                                    <div style={{ width: `${completedBar}%` }} className="bg-gray-700 p-2">
+                                        Completed
+                                    </div>
+                                    :
+                                    <></>
+                                    }
+                                </div>
+                            </div>
                             <h2>Tasks for {project.name}</h2>
                             <>
                             {kanban
