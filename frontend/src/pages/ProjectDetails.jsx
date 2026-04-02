@@ -50,9 +50,9 @@ function ProjectDetails() {
                 setErrorMessage('')
                 const project = await projectClient.get('/' + params.projectId)
                 setProject(project.data)
-    // get our tasks from database
+// get our tasks from database
                 const { data } = await projectClient.get('/'+ params.projectId + '/tasks')
-    // save that in component's/local state variable
+// save that in component's/local state variable
                 setTasks(data)
             }
             catch (err) {            
@@ -70,14 +70,14 @@ function ProjectDetails() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-    // make a post request to create the task based off the state (title, body)
+// make a post request to create the task based off the state (title, body)
             setNoError(true)
             setErrorMessage('')
             setLoading(true)
             const { data } = await taskClient.post('/' + params.projectId + '/tasks', { title, description })
-    // add the new task to the state
+// add the new task to the state
             setTasks([...tasks, data])
-    // reset the form
+// reset the form
             setTitle('')
             setDescription('')
             setAdding(false)

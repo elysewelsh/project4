@@ -12,16 +12,30 @@ function Project({ project, projects={}, setProjects=[], canEdit=true, isLink=tr
     
     const [description, setDescription] = useState('')
 
+    const [noError, setNoError] = useState(true)
+    
+    const [errorMessage, setErrorMessage] = useState('')
+
+    const [loading, setLoading] = useState(false)
+
     const handleDelete = async () => {
         try {
+            setNoError(true)
+            setErrorMessage('')
+            setLoading(true)
 // removing project from database
-        await projectClient.delete(`${project._id}`)
-// removing post from state
-        setProjects(projects => projects.filter(p => p._id !== project._id))
+            const { data } = await projectClient.delete(`${project._id}`)
+// removing project from state
+            setProjects(projects => projects.filter(p => p._id !== project._id))
+            alert(data.message)
         }
         catch (err) {
-            console.error(err)
-            alert(err.response.data.message)
+            console.error(err.response.data.message)
+            setNoError(false)
+            setErrorMessage(err.response.data.message)
+        }
+        finally {
+            setLoading(false)
         }
     }
 
@@ -34,18 +48,24 @@ function Project({ project, projects={}, setProjects=[], canEdit=true, isLink=tr
     const handleSubmit = async (e) => {
             e.preventDefault()
             try {
+                setLoading(true)
 // make a put request to update the post based off the state (title, body)
-            const { data } = await projectClient.put(`/${project._id}`, { name, description})
+                const { data } = await projectClient.put(`/${project._id}`, { name, description})
 // map over projects state to update new fields in form for project that matches project in view
-            const updatedProjects = projects.map(p => p._id === project._id ? data : p)
-            setProjects(updatedProjects)
+                const updatedProjects = projects.map(p => p._id === project._id ? data : p)
+                setProjects(updatedProjects)
 // reset the form
                 setName('')
                 setDescription('')
                 setEditing(false)
             }
             catch (err) {
-                console.error(err)
+                console.error(err.response.data.message)
+                setNoError(false)
+                setErrorMessage(err.response.data.message)
+            }
+            finally {
+                setLoading(false)
             }
         }
 
@@ -55,11 +75,25 @@ function Project({ project, projects={}, setProjects=[], canEdit=true, isLink=tr
 
     return (
         <div className="bg-gray-200 p-5 border-1 rounded-xl">
+            <div className="mt-5 font-medium text-blue-500 text-center text-lg">
+                {noError ?
+                    <></>
+                :
+                    <span>{errorMessage}</span>
+                }
+            </div>
+            <div className="mt-5 font-medium text-blue-500 text-center text-lg">
+                {loading?
+                    <span>Please wait...</span>
+                :
+                    <></>
+                }
+            </div>
             <div className="flex flex-row justify-between mb-3">
                 {isLink ?
-                <Link className="self-baseline font-bold underline underline-offset-4 text-lg mt-2" to={'/ProjectDetails/'+ project._id}>{project.name}</Link>
+                    <Link className="self-baseline font-bold underline underline-offset-4 text-lg mt-2" to={'/ProjectDetails/'+ project._id}>{project.name}</Link>
                 :
-                <h3 className="self-baseline font-bold text-lg mt-2">{project.name}</h3>
+                    <h3 className="self-baseline font-bold text-lg mt-2">{project.name}</h3>
                 }
                 <>
                     {canEdit &&
@@ -67,7 +101,6 @@ function Project({ project, projects={}, setProjects=[], canEdit=true, isLink=tr
                     }
                 </>
             </div>
-
             <p><span className="font-medium">Created: </span><span>{date.toLocaleDateString()} {date.toLocaleTimeString()}</span></p>
             <p><span className="font-medium">Description: </span><span>{project.description}</span></p>
             <>
@@ -99,15 +132,14 @@ function Project({ project, projects={}, setProjects=[], canEdit=true, isLink=tr
                     <button className="mt-3 w-[50%] border-1 rounded-md self-center bg-gray-300 font-medium cursor-pointer">Submit</button>
                 </form>
             :
-            <>
-                {canEdit &&
-                    <div className="flex flex-row justify-end mt-3">  
-                        <button className="text-gray-500 underline underline-offset-4 cursor-pointer" onClick={handleEdit}>Edit Project</button>   
-                    </div>
-                }
-            </>
+                <>
+                    {canEdit &&
+                        <div className="flex flex-row justify-end mt-3">  
+                            <button className="text-gray-500 underline underline-offset-4 cursor-pointer" onClick={handleEdit}>Edit Project</button>   
+                        </div>
+                    }
+                </>
             }
-    
             </>
         </div>
     )

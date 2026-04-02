@@ -36,7 +36,6 @@ function Login() {
             setLoading(true)
 // send form data to our backend
             const { data } = await userClient.post('/login', form)
-            // console.log(data)
 // take the token and store it locally in localStorage
             localStorage.setItem("token", data.token)
 // save some user data in our state

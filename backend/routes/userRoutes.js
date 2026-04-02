@@ -12,7 +12,6 @@ router.post('/login', userController.loginUser);
 
 // GET /api/users/ - verify logged in user's token and then send back user details
 router.use(authMiddleware)
-
 router.get('/', userController.verifyUser);
  
 export default router

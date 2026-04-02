@@ -32,18 +32,3 @@ taskClient.interceptors.request.use((req) => {
     }
     return req
 })
-
-        // const { language } = req.query
-
-        // let response
-
-        // if (language) {
-        //     response = await apiClient.get(`/random?language=${language}`);
-        // } else {
-        //     response = await apiClient.get('/random');
-        // }
-
-        // const transformedData = `{ "fact" : "${response.data.text}" }`
-
-    
-        // res.send(transformedData);

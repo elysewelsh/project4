@@ -25,7 +25,7 @@ useEffect(() => {
         setNoError(true)
         setErrorMessage('')
         setLoading(true)
-// get our posts from database
+// get projects from database
         const { data } = await projectClient.get('/')
 // save that in component's/local state variable
         setProjects(data)
@@ -56,7 +56,7 @@ const handleSubmit = async (e) => {
         setNoError(true)
         setErrorMessage('')
         setLoading(true)
-// make a post request to create the post based off the state (title, body)
+// make a post request to create the project based off the state (title, body)
         const { data } = await projectClient.post('/', { name, description })
 // add the new project to the state
         setProjects([...projects, data])

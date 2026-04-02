@@ -37,7 +37,6 @@ const createProject = async (req, res) => {
       ...req.body,
       user: req.user._id
     });
-    // console.log("New Project:" + project)
     await project.save();
     res.status(201).json(project);
   } catch (err) {
@@ -69,10 +68,6 @@ const deleteProject = async (req, res) => {
     if (req.user._id != parentProject.user._id) {
         return res.status(403).json({ message: 'User forbidden from deleting this project' });
     }
-    // const tasks = await Task.find({
-    //     project: {$eq: req.params.id}
-    // })
-    // console.log(tasks);
     const deleteProject = await Project.findByIdAndDelete(req.params.id);
     const deleteTasks = await Task.deleteMany({ project: { $eq: req.params.id}});
     res.json({ message: `Project ID ${deleteProject._id} deleted! ${deleteTasks.deletedCount} task(s) deleted as well` });
