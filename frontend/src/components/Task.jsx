@@ -10,8 +10,6 @@ function Task({ task, tasks, setTasks }) {
         const [title, setTitle] = useState('')
         
         const [description, setDescription] = useState('')
-
-        // const [status, setStatus] = useState('Pending')
     
         const handleDelete = async () => {
             try {
@@ -33,8 +31,9 @@ function Task({ task, tasks, setTasks }) {
             setEditing(true)       
         }
 
-        function handleStatusChange (taskId, newStatus) {
-        const updatedTasks = tasks.map(task => task._id === taskId ? {...task, status: newStatus } : task )
+        const handleStatusChange = async (taskId, newStatus) => {
+        const { data } = await taskClient.put('/tasks/'+taskId, { status: newStatus })
+        const updatedTasks = tasks.map(task => task._id === data._id ? {...task, status: data.status } : task )
         setTasks(updatedTasks)
         }
     
@@ -49,7 +48,6 @@ function Task({ task, tasks, setTasks }) {
     // reset the form
                     setTitle('')
                     setDescription('')
-                    // setStatus('Pending')
                     setEditing(false)
                 }
                 catch (err) {
