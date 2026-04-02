@@ -55,53 +55,65 @@ function Project({ project, projects={}, setProjects=[], canEdit=true, isLink=tr
             }
         }
 
-                    // <Link key={project._id} to={"/ProjectDetails/"+ project._id} params={project={project} projects={projects} setProjects={setProjects} canEdit={true}}>
-                    //     <li>{project.name}</li>
-                    // </Link>
-
-
+    const handleCancel = async () => {
+    setEditing(false)
+    }
 
     return (
-        <div>
-            {isLink ?
-                <Link to={'/ProjectDetails/'+ project._id}>{project.name}</Link>
+        <div className="bg-gray-200 p-5 border-1 rounded-xl">
+            <div className="flex flex-row justify-between mb-3">
+                {isLink ?
+                <Link className="self-baseline font-bold underline underline-offset-4 text-lg mt-2" to={'/ProjectDetails/'+ project._id}>{project.name}</Link>
                 :
-                <h3>{project.name}</h3>
-            }
-            <div>Created Date: <span>{date.toLocaleDateString()} {date.toLocaleTimeString()}</span></div>
-            <p>Project Description: <span>{project.description}</span></p>
-            {/* <p>Project Owned By: <span>{project.user.username}</span></p> */}
-            {canEdit &&
+                <h3 className="self-baseline font-bold text-lg mt-2">{project.name}</h3>
+                }
                 <>
-                <button onClick={handleDelete}>X</button>
-                <button onClick={handleEdit}>Edit</button>
+                    {canEdit &&
+                    <button className="font-medium bg-gray-300 rounded-full px-3 border-1 cursor-pointer" onClick={handleDelete}>X</button>
+                    }
                 </>
-            }
+            </div>
+
+            <p><span className="font-medium">Created: </span><span>{date.toLocaleDateString()} {date.toLocaleTimeString()}</span></p>
+            <p><span className="font-medium">Description: </span><span>{project.description}</span></p>
             <>
             {editing ?
-            <form onSubmit={handleSubmit}>
-                <h2>Edit Project</h2>
-                <label htmlFor="name">Project Name:</label>
-                <input 
-                    type="text" 
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required={true}>
-                </input>
-                <label htmlFor="description">Project Description:</label>
-                <textarea
-                    type="text"
-                    id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required={true}>
-                </textarea>
-                <button>Submit</button>
-            </form>
+                <form 
+                className="flex flex-col border-1 rounded-md p-2 mt-3 bg-gray-100"
+                onSubmit={handleSubmit}>
+                    <div className="flex flex-row justify-end">
+                        <button className="font-medium bg-gray-300 rounded-full px-2 border-1 cursor-pointer" onClick={handleCancel}>X</button>
+                    </div>
+                    <label className="font-medium" htmlFor="title">New Name:</label>
+                    <input 
+                        className="bg-white ml-2 rounded-md p-1 px-2 cursor-pointer border-1 border-gray-300"
+                        type="text" 
+                        id="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required={true}>
+                    </input>
+                    <label className="font-medium" htmlFor="description">New Description:</label>
+                    <textarea
+                        className="bg-white ml-2 rounded-md p-1 px-2 cursor-pointer border-1 border-gray-300"
+                        type="text"
+                        id="description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required={true}>
+                    </textarea>
+                    <button className="mt-3 w-[50%] border-1 rounded-md self-center bg-gray-300 font-medium cursor-pointer">Submit</button>
+                </form>
             :
-            <></>
+            <>
+                {canEdit &&
+                    <div className="flex flex-row justify-end mt-3">  
+                        <button className="text-gray-500 underline underline-offset-4 cursor-pointer" onClick={handleEdit}>Edit Project</button>   
+                    </div>
+                }
+            </>
             }
+    
             </>
         </div>
     )

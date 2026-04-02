@@ -42,13 +42,21 @@ function Login() {
     }
 
     return (
-        <div>
-            <h1>Login Page</h1>
+        <div className="m-10">
+            <div className="flex flex-col">
+            <p className="font-medium">New user?</p>
+            <p className="ml-3 mb-2">use the Register link above</p>
+            <p className="font-medium">Have an account?</p>
+            <p className="ml-3 mb-2">please login below</p>
+        </div>
+
             
-            <form onSubmit={handleSubmit}>
-               
+            <form 
+            className="flex flex-col gap-3 mt-10 border-1 rounded-xl p-5 bg-gray-300"
+            onSubmit={handleSubmit}>   
                 <label htmlFor="email">email:</label>
                 <input
+                    className="bg-white ml-2 rounded-md p-1 px-2 border-1 border-gray-400"
                     value={form.email}
                     onChange={handleChange}
                     id="email"
@@ -56,9 +64,9 @@ function Login() {
                     type="text"
                     required 
                 />
-                
                 <label htmlFor="password">password:</label>
                 <input
+                    className="bg-white ml-2 rounded-md p-1 px-2 border-1 border-gray-400"
                     value={form.password}
                     onChange={handleChange}
                     id="password"
@@ -66,8 +74,7 @@ function Login() {
                     type="password"
                     required
                 />
-
-                <button>Login</button>
+                <button className="mt-3 w-[10%] border-1 rounded-md self-center bg-gray-400 font-medium cursor-pointer">Login</button>
             </form>
         </div>
     )
