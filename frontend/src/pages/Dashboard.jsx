@@ -17,11 +17,14 @@ const [noError, setNoError] = useState(true)
 
 const [errorMessage, setErrorMessage] = useState('')
 
+const [loading, setLoading] = useState(false)
+
 useEffect(() => {
     async function getData() {
         try {
         setNoError(true)
         setErrorMessage('')
+        setLoading(true)
 // get our posts from database
         const { data } = await projectClient.get('/')
 // save that in component's/local state variable
@@ -31,6 +34,9 @@ useEffect(() => {
             console.error(err.response.data.message)
             setNoError(false)
             setErrorMessage(err.response.data.message)
+        }
+        finally {
+            setLoading(false)
         }
     }
     getData()
@@ -48,6 +54,8 @@ const handleSubmit = async (e) => {
     e.preventDefault()
     try {
         setNoError(true)
+        setErrorMessage('')
+        setLoading(true)
 // make a post request to create the post based off the state (title, body)
         const { data } = await projectClient.post('/', { name, description })
 // add the new project to the state
@@ -62,12 +70,22 @@ const handleSubmit = async (e) => {
             setNoError(false)
             setErrorMessage(err.response.data.message)
     }
+    finally {
+        setLoading(false)
+    }
 }
 
     return (
 
         <div className="m-10 md:m-20">
             <h1 className="text-center font-bold text-3xl mt-5 mb-10">Your Projects</h1>
+            <div className="mt-5 font-medium text-blue-500 text-center text-lg">
+                {loading?
+                    <span>Please wait...</span>
+                :
+                    <></>
+                }
+            </div>
             {noError ?
                 <>
                     {adding ?

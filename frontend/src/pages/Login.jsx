@@ -19,6 +19,8 @@ function Login() {
 
     const [errorMessage, setErrorMessage] = useState('')
 
+    const [loading, setLoading] = useState(false)
+
     const handleChange = (e) => {
         setForm({
             ...form,
@@ -31,6 +33,7 @@ function Login() {
         try {
             setNoError(true)
             setErrorMessage('')
+            setLoading(true)
 // send form data to our backend
             const { data } = await userClient.post('/login', form)
             // console.log(data)
@@ -46,6 +49,9 @@ function Login() {
             setNoError(false)
             setErrorMessage(err.response.data.message)
         }   
+        finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -61,6 +67,13 @@ function Login() {
                     <></>
                 :
                     <span>{errorMessage}</span>
+                }
+            </div>
+            <div className="mt-5 font-medium text-blue-500 text-center text-lg">
+                {loading?
+                    <span>Please wait...</span>
+                :
+                    <></>
                 }
             </div>
             <form 

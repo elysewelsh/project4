@@ -29,6 +29,8 @@ function ProjectDetails() {
 
     const [errorMessage, setErrorMessage] = useState('')
 
+    const [loading, setLoading] = useState(false)
+
     const dimensions = useWindowSize();
     let kanban;
         if (dimensions.width >= 900) {
@@ -40,22 +42,26 @@ function ProjectDetails() {
     useEffect(() => {
         async function getData() {
             try {
+                setLoading(true)
                 if (params.projectId === "undefined") {
                     return
                 }
-            setNoError(true)
-            setErrorMessage('')
-            const project = await projectClient.get('/' + params.projectId)
-            setProject(project.data)
+                setNoError(true)
+                setErrorMessage('')
+                const project = await projectClient.get('/' + params.projectId)
+                setProject(project.data)
     // get our tasks from database
-            const { data } = await projectClient.get('/'+ params.projectId + '/tasks')
+                const { data } = await projectClient.get('/'+ params.projectId + '/tasks')
     // save that in component's/local state variable
-            setTasks(data)
+                setTasks(data)
             }
             catch (err) {            
                 console.error(err.response.data.message)
                 setNoError(false)
                 setErrorMessage(err.response.data.message)
+            }
+            finally {
+                setLoading(false)
             }
         }
         getData()
@@ -67,6 +73,7 @@ function ProjectDetails() {
     // make a post request to create the task based off the state (title, body)
             setNoError(true)
             setErrorMessage('')
+            setLoading(true)
             const { data } = await taskClient.post('/' + params.projectId + '/tasks', { title, description })
     // add the new task to the state
             setTasks([...tasks, data])
@@ -79,6 +86,9 @@ function ProjectDetails() {
             console.error(err.response.data.message)
             setNoError(false)
             setErrorMessage(err.response.data.message)
+        }
+        finally {
+            setLoading(false)
         }
     }
 
@@ -110,6 +120,13 @@ function ProjectDetails() {
 
     return (
         <div className="m-10 p-5">
+            <div className="mt-5 font-medium text-blue-500 text-center text-lg">
+                {loading?
+                    <span>Please wait...</span>
+                :
+                    <></>
+                }
+            </div>
             <>
                 {noError ?
                     <>

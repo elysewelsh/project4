@@ -20,6 +20,8 @@ function Register() {
 
     const [errorMessage, setErrorMessage] = useState('')
 
+    const [loading, setLoading] = useState(false)
+
     const handleChange = (e) => {
         setForm({
             ...form,
@@ -32,6 +34,7 @@ function Register() {
         try {
             setNoError(true)
             setErrorMessage('')
+            setLoading(true)
 // send form data to our backend
             const { data } = await userClient.post('/register', form)
 // take the token and store it locally in localStorage
@@ -46,10 +49,20 @@ function Register() {
             setNoError(false)
             setErrorMessage(err.response.data.message)
         }  
+        finally {
+            setLoading(false)
+        }
     }
 
     return (
         <div className="m-10">
+            <div className="mt-5 font-medium text-blue-500 text-center text-lg">
+                {loading?
+                    <span>Please wait...</span>
+                :
+                    <></>
+                }
+            </div>
             <div className="mt-5 font-medium text-red-500 text-center text-lg">
                 {noError?
                     <></>
