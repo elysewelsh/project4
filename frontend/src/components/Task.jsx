@@ -56,7 +56,7 @@ function Task({ task, tasks, setTasks }) {
             }
 
     return (
-        <div>
+        <div className="bg-gray-200 p-5 border-1 rounded-xl">
             <h3>{task.title}</h3>
             <div>Date Created: <span>{date.toLocaleDateString()} {date.toLocaleTimeString()}</span></div>
             <p>Task Description: <span>{task.description}</span></p>

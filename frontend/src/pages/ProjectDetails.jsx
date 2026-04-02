@@ -112,11 +112,11 @@ const completedBar = (completedTasks/totalTasks)*100
                         <>
                             <Project project={project} canEdit={false} isLink={false}/>
                             <div className="m-4 p-4 gap-3 border-1 rounded-xl">
-                                Project Progress
+                                Project Progress: {completedBar}% Complete
                                 <div className="flex flex-row w-full border-1">
-                                    {pendingBar > 0 ?
-                                    <div style={{ width: `${pendingBar}%` }} className="bg-gray-400 p-2">
-                                        Pending
+                                                                        {completedBar > 0 ?
+                                    <div style={{ width: `${completedBar}%` }} className="bg-gray-700 p-2">
+                                        Completed
                                     </div>
                                     :
                                     <></>
@@ -128,35 +128,37 @@ const completedBar = (completedTasks/totalTasks)*100
                                     :
                                     <></>
                                     }
-                                    {completedBar > 0 ?
-                                    <div style={{ width: `${completedBar}%` }} className="bg-gray-700 p-2">
-                                        Completed
+                                    {pendingBar > 0 ?
+                                    <div style={{ width: `${pendingBar}%` }} className="bg-gray-400 p-2">
+                                        Pending
                                     </div>
                                     :
                                     <></>
                                     }
                                 </div>
                             </div>
-                            <h2>Tasks for {project.name}</h2>
-                            <>
+                            <h2 className="text-center font-bold text-4xl mt-5 mb-10">Tasks for {project.name}</h2>
+                            <div className="w-full flex flex-row justify-around">
                             {kanban
                             ?
-                            <div>
-                                <div>
-                                    <h3>Pending Tasks</h3>
-                                    <div>
+                            <div className="w-full flex flex-row justify-evenly">
+                                <div className="flex flex-col gap-5 px-[5%]">
+                                    <h3 className="text-center font-bold text-2xl">Pending Tasks</h3>
+                                    <div className="flex flex-col gap-5">
                                         {pending.map(task => <Task key={task._id} task={task} tasks={tasks} setTasks={setTasks}/>)}
                                     </div>
                                 </div>
-                                <div>
-                                    <h3>Tasks In-Progress</h3>
-                                    <div>
+                                <div className="border-1"></div>
+                                <div className="flex flex-col gap-5 px-[5%]">
+                                    <h3 className="text-center font-bold text-2xl">Tasks In-Progress</h3>
+                                    <div className="flex flex-col gap-5 ">
                                         {inProgress.map(task => <Task key={task._id} task={task} tasks={tasks} setTasks={setTasks}/>)}
                                     </div>
                                 </div>
-                                <div>
-                                    <h3>Completed Tasks</h3>
-                                    <div>
+                                <div className="border-1"></div>
+                                <div className="flex flex-col gap-5 px-[5%]">
+                                    <h3 className="text-center font-bold text-2xl">Completed Tasks</h3>
+                                    <div className="flex flex-col gap-5">
                                         {completed.map(task => <Task key={task._id} task={task} tasks={tasks} setTasks={setTasks}/>)}
                                     </div>
                                 </div>
@@ -166,7 +168,7 @@ const completedBar = (completedTasks/totalTasks)*100
                                 {tasks.map(task => <Task key={task._id} task={task} tasks={tasks} setTasks={setTasks}/>)}
                             </div>
                             }
-                            </>
+                            </div>
                         </>
                     :
                         <></>
