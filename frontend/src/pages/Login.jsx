@@ -15,6 +15,10 @@ function Login() {
         password: ''
     })
 
+    const [noError, setNoError] = useState(true)
+
+    const [errorMessage, setErrorMessage] = useState('')
+
     const handleChange = (e) => {
         setForm({
             ...form,
@@ -25,6 +29,8 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
+            setNoError(true)
+            setErrorMessage('')
 // send form data to our backend
             const { data } = await userClient.post('/login', form)
             // console.log(data)
@@ -36,25 +42,31 @@ function Login() {
             navigate("/dashboard")
         }
         catch (err) {
-            console.error(err)
-            alert(err.message)
+            console.error(err.response.data.message)
+            setNoError(false)
+            setErrorMessage(err.response.data.message)
         }   
     }
 
     return (
         <div className="m-10">
             <div className="flex flex-col">
-            <p className="font-medium">New user?</p>
-            <p className="ml-3 mb-2">use the Register link above</p>
-            <p className="font-medium">Have an account?</p>
-            <p className="ml-3 mb-2">please login below</p>
-        </div>
-
-            
+                <p className="font-medium">New user?</p>
+                <p className="ml-3 mb-2">use the Register link above</p>
+                <p className="font-medium">Have an account?</p>
+                <p className="ml-3 mb-2">please login below</p>
+            </div>
+            <div className="mt-5 font-medium text-red-500 text-center text-lg">
+                {noError?
+                    <></>
+                :
+                    <span>{errorMessage}</span>
+                }
+            </div>
             <form 
-            className="flex flex-col gap-3 mt-10 border-1 rounded-xl p-5 bg-gray-300"
-            onSubmit={handleSubmit}>   
-                <label htmlFor="email">email:</label>
+                className="flex flex-col gap-3 mt-10 border-1 rounded-xl p-5 bg-gray-300"
+                onSubmit={handleSubmit}>   
+                <label className="font-medium" htmlFor="email">email:</label>
                 <input
                     className="bg-white ml-2 rounded-md p-1 px-2 border-1 border-gray-400"
                     value={form.email}
@@ -64,7 +76,7 @@ function Login() {
                     type="text"
                     required 
                 />
-                <label htmlFor="password">password:</label>
+                <label className="font-medium" htmlFor="password">password:</label>
                 <input
                     className="bg-white ml-2 rounded-md p-1 px-2 border-1 border-gray-400"
                     value={form.password}

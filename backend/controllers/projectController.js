@@ -6,7 +6,7 @@ const getUserProjects = async (req, res) => {
     const projects = await Project.find(
         {user: { $eq: req.user._id}})
         .populate('user')
-    res.json(projects);
+    res.json(projects, req);
   } catch (err) {
     res.status(500).json(err);
   }

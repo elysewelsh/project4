@@ -12,12 +12,6 @@ function Project({ project, projects={}, setProjects=[], canEdit=true, isLink=tr
     
     const [description, setDescription] = useState('')
 
-    console.log("This is the project ID:", project._id)
-
-    // const projectUser = project.user[0].username
-
-    // console.log(project.user.username)
-
     const handleDelete = async () => {
         try {
 // removing project from database
@@ -56,7 +50,7 @@ function Project({ project, projects={}, setProjects=[], canEdit=true, isLink=tr
         }
 
     const handleCancel = async () => {
-    setEditing(false)
+        setEditing(false)
     }
 
     return (
