@@ -57,27 +57,29 @@ function Task({ task, tasks, setTasks }) {
 
     return (
         <div className="bg-gray-200 p-5 border-1 rounded-xl">
-            <h3>{task.title}</h3>
-            <div>Date Created: <span>{date.toLocaleDateString()} {date.toLocaleTimeString()}</span></div>
-            <p>Task Description: <span>{task.description}</span></p>
-            <div>
-                <p>Current Status: <span>{task.status}</span></p>
-                <div>
-                    <p>Update Status: </p>
-                        <select
-                        id="status"
-                        value={status}
-                        onChange={(e) => handleStatusChange(task._id, (e.target.value))}>
-                            <option value=''></option>
-                            <option value="Completed">Completed</option>
-                            <option value="Pending">Pending</option>
-                            <option value="In-Progress">In-Progress</option>
-                        </select>
-                </div>
+            <h3 className="font-bold text-lg mb-2">{task.title}</h3>
+            <p><span className="font-medium">Date Created: </span><span>{date.toLocaleDateString()} {date.toLocaleTimeString()}</span></p>
+            <p><span className="font-medium">Task Description: </span><span>{task.description}</span></p>
+            {/* <p><span className="font-medium">Current Status: </span><span>{task.status}</span></p> */}
+            <div className="flex flex-row">
+                <p className="font-medium">Status: </p>
+                    <select
+                    className="bg-white ml-2 rounded-md p-[1%] cursor-pointer"
+                    id="status"
+                    value={task.status}
+                    onChange={(e) => handleStatusChange(task._id, (e.target.value))}>
+                        {/* <option value=''></option> */}
+                        <option value="Completed">Completed</option>
+                        <option value="Pending">Pending</option>
+                        <option value="In-Progress">In-Progress</option>
+                    </select>
             </div>
             {/* <p>{task.project}</p> */}
-            <button onClick={handleDelete}>X</button>
-            <button onClick={handleEdit}>Edit</button>
+            <div className="flex flex-row justify-between mt-4">  
+                <button className="text-gray-500 cursor-pointer" onClick={handleEdit}>Edit Task</button>          
+                <button className="font-medium bg-gray-300 rounded-full px-2 border-1 cursor-pointer" onClick={handleDelete}>X</button>
+            </div>
+
             <>
             {editing ?
             <form onSubmit={handleSubmit}>

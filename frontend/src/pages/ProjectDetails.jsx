@@ -105,7 +105,6 @@ const completedBar = (completedTasks/totalTasks)*100
                     </textarea>
                     <button>Submit</button>
                 </form>
-                <h1>Project Details</h1>
                 <>
                     {params.projectId !== "undefined"
                     ?
@@ -141,7 +140,7 @@ const completedBar = (completedTasks/totalTasks)*100
                             <div className="w-full flex flex-row justify-around">
                             {kanban
                             ?
-                            <div className="w-full flex flex-row justify-evenly">
+                            <div className="w-full flex flex-row justify-center">
                                 <div className="flex flex-col gap-5 px-[5%]">
                                     <h3 className="text-center font-bold text-2xl">Pending Tasks</h3>
                                     <div className="flex flex-col gap-5">
