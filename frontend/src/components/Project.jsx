@@ -75,14 +75,14 @@ function Project({ project, projects={}, setProjects=[], canEdit=true, isLink=tr
 
     return (
         <div className="bg-gray-200 p-5 border-1 rounded-xl">
-            <div className="mt-5 font-medium text-blue-500 text-center text-lg">
+            <div className="font-medium text-blue-500 text-center text-lg">
                 {noError ?
                     <></>
                 :
                     <span>{errorMessage}</span>
                 }
             </div>
-            <div className="mt-5 font-medium text-blue-500 text-center text-lg">
+            <div className="font-medium text-blue-500 text-center text-lg">
                 {loading?
                     <span>Please wait...</span>
                 :

@@ -4,7 +4,9 @@ import Task from '../models/Task.js'
 const getUserProjects = async (req, res) => {
   try {
     const projects = await Project.find(
-        {user: { $eq: req.user._id}})
+        {
+            user: { $eq: req.user._id}
+        })
         .populate('user')
     res.json(projects, req);
   } catch (err) {
