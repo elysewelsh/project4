@@ -4,8 +4,8 @@ A modern, collaborative project management tool that is intuitive for single use
 
 ## 🌐 Deployment
 
-**Frontend** 🔗 https://ewprotasker.netlify.app
-**Backend:** 🔗 https://protasker-n68f.onrender.com
+* **Frontend** 🔗 https://ewprotasker.netlify.app
+* **Backend:** 🔗 https://protasker-n68f.onrender.com
 
 ## 💻 Technologies Used
 
