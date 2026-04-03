@@ -19,7 +19,7 @@ A modern, collaborative project management tool that is intuitive for single use
 * **Edit Tasks and Projects:** Edit any task or project property.
 * **Delete Items:** Permanently remove projects from the dashboard and/or tasks from the Project Details page.
 
-## ✨ API Endpoints
+## 🔌 API Endpoints
 
 **User Endpoints**
 
