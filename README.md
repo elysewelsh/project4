@@ -2,6 +2,11 @@
 
 A modern, collaborative project management tool that is intuitive for single users but powerful enough for small teams
 
+## 🌐 Deployment
+
+**Frontend** 🔗 https://ewprotasker.netlify.app
+**Backend:** 🔗 https://protasker-n68f.onrender.com
+
 ## 💻 Technologies Used
 
 * **MongoDB:** Atlas combines the flexible document model with a suite of data services to give you a versatile cloud database that simplifies everything you build.
